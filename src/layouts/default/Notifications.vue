@@ -1,38 +1,31 @@
 <template>
-    <div class="text-center">
-      <v-btn
-        color="orange-darken-2"
-        @click="snackbar = true"
-      >
-        Open Snackbar
-      </v-btn>
-  
-      <v-snackbar
-        v-model="snackbar"
-        :timeout="timeout"
-      >
-        {{ text }}
-  
+  <div class="text-center">
+      <v-snackbar v-for="(item, index) in appStore.notificationList" :key="item.id" v-model="item.show"
+        :timeout="item.timeout" @update:modelValue="appStore.dismissNotification(item.id)"
+        :style="`bottom:${(50 * index)}px;`">
+        {{ item.message }}
+
         <template v-slot:actions>
-          <v-btn
-            color="blue"
-            variant="text"
-            @click="snackbar = false"
-          >
+          <v-btn color="blue" variant="text" @click="appStore.dismissNotification(item.id)">
             Close
           </v-btn>
         </template>
       </v-snackbar>
-    </div>
-  </template>
+  </div>
+</template>
 
-<script >
+<script setup>
+import { useAppStore } from '@/stores';
 
-export default {
-  data: () => ({
-    snackbar: false,
-    text: 'My timeout is set to 2000.',
-    timeout: 2000,
-  }),
-}
+
+const appStore = useAppStore();
+
+console.log({ appStore });
+
+
+const addNotification = (message, timeout) => {
+  appStore.addNotification(message, timeout);
+};
+
+
 </script>

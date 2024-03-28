@@ -16,6 +16,8 @@
 
 <script setup>
 import { useSupabaseStore } from '@/stores';
+import {  ref } from 'vue'
+const email = ref('');
 
 const supabaseStore = useSupabaseStore();
 
